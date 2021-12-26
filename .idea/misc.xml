@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Carol/projects/MyTaxi/app/src/main/res/drawable/map_pop_up_bg.xml" value="0.2078125" />
         <entry key="..\:/Carol/projects/MyTaxi/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Carol/projects/MyTaxi/app/src/main/res/layout/fragment_map.xml" value="0.18" />
+        <entry key="..\:/Carol/projects/MyTaxi/app/src/main/res/layout/fragment_map.xml" value="0.33" />
         <entry key="..\:/Carol/projects/MyTaxi/app/src/main/res/layout/list_item_vehicles.xml" value="0.33" />
+        <entry key="..\:/Carol/projects/MyTaxi/app/src/main/res/layout/map_layout.xml" value="0.16757246376811594" />
       </map>
     </option>
   </component>

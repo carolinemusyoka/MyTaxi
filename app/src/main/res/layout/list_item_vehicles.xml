@@ -6,36 +6,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="10dp"
+    android:elevation="30dp"
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content">
+    android:layout_width="120dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_cl"
         android:layout_margin="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/image_cv"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toTopOf="@+id/vehicle_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:focusable="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
             <ImageView
                 android:id="@+id/vehicle_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="100dp"
                 android:contentDescription="Image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/taxi" />
-        </com.google.android.material.card.MaterialCardView>
+
 
         <TextView
             android:id="@+id/vehicle_name"
@@ -45,9 +35,9 @@
             android:paddingTop="5dp"
             android:textSize="12sp"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="@id/image_cv"
-            app:layout_constraintRight_toRightOf="@id/image_cv"
-            app:layout_constraintTop_toBottomOf="@id/image_cv"
+            app:layout_constraintLeft_toLeftOf="@id/vehicle_image"
+            app:layout_constraintRight_toRightOf="@id/vehicle_image"
+            app:layout_constraintTop_toBottomOf="@id/vehicle_image"
             android:textAlignment="center"
             tools:text="Pooling" />
 
@@ -62,8 +52,8 @@
             android:textAlignment="center"
             android:textSize="10sp"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="@id/image_cv"
-            app:layout_constraintRight_toRightOf="@id/image_cv"
+            app:layout_constraintLeft_toLeftOf="@id/vehicle_image"
+            app:layout_constraintRight_toRightOf="@id/vehicle_image"
             app:layout_constraintTop_toBottomOf="@+id/vehicle_name"
             tools:text="10 Kms away" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 
 class MainViewModel (private val mainRepository: MainRepository): ViewModel() {
 
-    suspend fun getVehicles(p1Lat: Double, p1Lon: Double, p2Lat: Double, p2Lon: Double) = liveData(Dispatchers.IO){
+   fun getVehicles(p1Lat: Double, p1Lon: Double, p2Lat: Double, p2Lon: Double) = liveData(Dispatchers.IO){
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = mainRepository.getVehicles(p1Lat, p1Lon, p2Lat, p2Lon).poiList))
