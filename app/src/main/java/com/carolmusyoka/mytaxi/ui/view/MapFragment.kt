@@ -33,6 +33,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.google.android.gms.maps.model.LatLngBounds
+
+
+
 
 
 
@@ -143,23 +147,18 @@ class MapFragment : Fragment(){
                             listLocation.add(location)
                         }
                         Log.d("TAG", "LocationArray:$listLocation ")
+                        listLocation.forEach { place ->
+                            googleMap.addMarker(
+                                MarkerOptions()
+                                    .position(place)
+                                    .title("Marker in Hamburg")
+                                    .icon(BitmapDescriptorFactory.fromBitmap(getCarBitmap(requireContext())))
+                            )
+                        }
                     })
-                    list?.forEach{ poi ->
-                        Log.d("TAG", "startMapPoi: $poi ")
-                        val latitude = poi.coordinate.latitude
-                        val longitude = poi.coordinate.longitude
-                        val location = LatLng(latitude, longitude)
-                        Log.d("TAG", "startMap:$location ")
-                    }
-                    val sydney = LatLng(0.0000, 0.0000)
-                    googleMap.addMarker(
-                        MarkerOptions()
-                            .position(sydney)
-                            .title("Marker in Hamburg")
-                            .icon(BitmapDescriptorFactory.fromBitmap(getCarBitmap(requireContext())))
-                    )
-                    val cameraPosition = CameraPosition.Builder().target(sydney).zoom(15.5f).build()
-                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                    val locBounds = LatLngBounds(LatLng(53.394655, 10.09989), LatLng(53.694865, 9.75758))
+//                    val cameraPosition = CameraPosition.Builder().target(locBounds).zoom(15.5f).build()
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(locBounds, 0))
                 }
 
             }
