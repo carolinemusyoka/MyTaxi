@@ -156,9 +156,14 @@ class MapFragment : Fragment(){
                             )
                         }
                     })
+                    val builder = LatLngBounds.Builder()
                     val locBounds = LatLngBounds(LatLng(53.394655, 10.09989), LatLng(53.694865, 9.75758))
-//                    val cameraPosition = CameraPosition.Builder().target(locBounds).zoom(15.5f).build()
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(locBounds, 0))
+                    builder.include(locBounds.southwest)
+                    builder.include(locBounds.northeast)
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
+//                    val centerBound = locBounds.center
+//                    val cameraPosition = CameraPosition.Builder().target(centerBound).zoom(15.5f).build()
+//                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
                 }
 
             }
