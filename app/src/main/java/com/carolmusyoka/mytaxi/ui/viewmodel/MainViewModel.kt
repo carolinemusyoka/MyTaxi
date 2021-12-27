@@ -1,12 +1,20 @@
 package com.carolmusyoka.mytaxi.ui.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import com.carolmusyoka.mytaxi.data.model.Poi
 import com.carolmusyoka.mytaxi.data.repository.MainRepository
 import com.carolmusyoka.mytaxi.utils.Resource
 import kotlinx.coroutines.Dispatchers
 
 class MainViewModel (private val mainRepository: MainRepository): ViewModel() {
+
+    val vehicles = MutableLiveData<List<Poi>>()
+
+    fun setVehicles(poi: List<Poi>){
+        vehicles.value = poi
+    }
 
    fun getVehicles(p1Lat: Double, p1Lon: Double, p2Lat: Double, p2Lon: Double) = liveData(Dispatchers.IO){
         emit(Resource.loading(data = null))

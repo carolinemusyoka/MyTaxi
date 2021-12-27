@@ -3,6 +3,7 @@ package com.carolmusyoka.mytaxi
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
+import com.carolmusyoka.mytaxi.data.model.Poi
 import com.carolmusyoka.mytaxi.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
