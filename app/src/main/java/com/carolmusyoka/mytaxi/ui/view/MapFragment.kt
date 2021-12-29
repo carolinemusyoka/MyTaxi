@@ -78,10 +78,6 @@ class MapFragment : Fragment(), ItemClickListener{
         }
     }
 
-    private fun clearAll() {
-
-    }
-
     private fun viewAll() {
         mainViewModel.vehicles.observe(viewLifecycleOwner, {
             val data = it
@@ -132,24 +128,6 @@ class MapFragment : Fragment(), ItemClickListener{
                 }
             }
         })
-    }
-
-    private fun addMarkers(googleMap: GoogleMap) {
-
-        list?.forEach {
-            val latitude = it.coordinate.latitude
-            val longitude = it.coordinate.longitude
-            val location = LatLng(latitude, longitude)
-            val marker = googleMap.addMarker(
-                MarkerOptions()
-                    .title(it.id.toString())
-                    .position(location)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi))
-            )
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(18.0f))
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
-            marker?.tag = it.id
-        }
     }
 
     private suspend fun startMap(savedInstanceState: Bundle?) {
