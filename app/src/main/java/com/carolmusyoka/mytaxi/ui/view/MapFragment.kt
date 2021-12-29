@@ -49,6 +49,10 @@ class MapFragment : Fragment(), ItemClickListener{
     private var allMarkers: MutableList<Marker> = mutableListOf()
     private lateinit var locationMarker: Marker
 
+    //TODO
+    // code clean-up (the right way)
+    // DI
+    // TESTING
 
 
     override fun onCreateView(
@@ -85,7 +89,7 @@ class MapFragment : Fragment(), ItemClickListener{
         builder.include(locBounds.southwest)
         builder.include(locBounds.northeast)
         googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
-        
+
         mainViewModel.vehicles.observe(viewLifecycleOwner, {
             val data = it
             Log.d("TAG", "startMapNewList:$data ")
