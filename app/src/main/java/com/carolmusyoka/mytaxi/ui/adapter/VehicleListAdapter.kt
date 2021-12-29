@@ -52,5 +52,6 @@ class VehicleListAdapter(private val poiList: List<Poi>, private var clickListen
 
 }
 interface ItemClickListener{
+
     fun onCardClick(poi: Poi)
 }

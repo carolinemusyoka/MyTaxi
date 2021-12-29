@@ -27,13 +27,14 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.MapsInitializer
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.google.android.gms.maps.model.MarkerOptions
+
+
+
 
 
 class MapFragment : Fragment(), ItemClickListener{
@@ -44,6 +45,9 @@ class MapFragment : Fragment(), ItemClickListener{
     private lateinit var mMapView: MapView
     private lateinit var googleMap: GoogleMap
     private  var list: List<Poi>? = null
+    private val listLocation: MutableList<LatLng> = mutableListOf()
+    private var allMarkers: MutableList<Marker> = mutableListOf()
+    private lateinit var locationMarker: Marker
 
 
 
@@ -71,10 +75,6 @@ class MapFragment : Fragment(), ItemClickListener{
         populateData()
         binding.viewAll.setOnClickListener {
             viewAll()
-            binding.viewAll.text = "Clear all"
-            if (binding.viewAll.text == "Clear all"){
-                clearAll()
-            }
         }
     }
 
@@ -85,7 +85,6 @@ class MapFragment : Fragment(), ItemClickListener{
     private fun viewAll() {
         mainViewModel.vehicles.observe(viewLifecycleOwner, {
             val data = it
-            val listLocation: MutableList<LatLng> = mutableListOf()
             Log.d("TAG", "startMapNewList:$data ")
             data.forEach { poi ->
                 val latitude = poi.coordinate.latitude
@@ -96,11 +95,13 @@ class MapFragment : Fragment(), ItemClickListener{
             }
             Log.d("TAG", "LocationArray:$listLocation ")
             listLocation.forEach { place ->
-                googleMap.addMarker(
+               locationMarker = googleMap.addMarker(
                     MarkerOptions()
                         .position(place)
                         .icon(BitmapDescriptorFactory.fromBitmap(getCarBitmap(requireContext())))
-                )
+                )!!
+                allMarkers.add(locationMarker)
+
             }
 
         })
@@ -178,22 +179,18 @@ class MapFragment : Fragment(), ItemClickListener{
     }
 
     override fun onCardClick(poi: Poi) {
-
-        Log.d("TAG", "onCardClick: $poi")
-        val longitude = poi.coordinate.longitude
-        val latitude  = poi.coordinate.latitude
-        val location = LatLng(latitude, longitude)
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(location)
-                    .title(poi.fleetType)
-                    .icon(BitmapDescriptorFactory.fromBitmap(getCarBitmap(requireContext())))
-            )
+        removeAllMarkers()
     }
 
     private fun getCarBitmap(context: Context): Bitmap {
         val bitmap: Bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.taxi_ov)
         return Bitmap.createScaledBitmap(bitmap, 100, 100, false)
+    }
+    private fun removeAllMarkers() {
+        for (locationMarker in allMarkers) {
+            locationMarker.remove()
+        }
+        allMarkers.clear()
     }
 
 }
