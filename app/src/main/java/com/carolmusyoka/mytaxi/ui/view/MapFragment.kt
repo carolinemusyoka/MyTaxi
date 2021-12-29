@@ -79,6 +79,13 @@ class MapFragment : Fragment(), ItemClickListener{
     }
 
     private fun viewAll() {
+        Log.d("TAG", "startMapList: $list")
+        val builder = LatLngBounds.Builder()
+        val locBounds = LatLngBounds(LatLng(53.394655, 10.09989), LatLng(53.694865, 9.75758))
+        builder.include(locBounds.southwest)
+        builder.include(locBounds.northeast)
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
+        
         mainViewModel.vehicles.observe(viewLifecycleOwner, {
             val data = it
             Log.d("TAG", "startMapNewList:$data ")
@@ -104,7 +111,7 @@ class MapFragment : Fragment(), ItemClickListener{
     }
 
     private fun populateData() {
-        mainViewModel.getVehicles(p1Lat = 53.694865, p1Lon = 9.757589, p2Lat = 53.394655, p2Lon = 10.099891).observe(viewLifecycleOwner, {
+        mainViewModel.getVehicles(53.694865, 9.757589,  53.394655,10.099891).observe(viewLifecycleOwner, {
             it?.let { resource ->
                 Log.d("TAG", "populateData: $resource")
                 when(resource.status){
@@ -148,7 +155,7 @@ class MapFragment : Fragment(), ItemClickListener{
                     val locBounds = LatLngBounds(LatLng(53.394655, 10.09989), LatLng(53.694865, 9.75758))
                     builder.include(locBounds.southwest)
                     builder.include(locBounds.northeast)
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
 
                 }
 
@@ -157,7 +164,28 @@ class MapFragment : Fragment(), ItemClickListener{
     }
 
     override fun onCardClick(poi: Poi) {
+        // change location bounds and move camera to exact location
+        Toast.makeText(context, poi.fleetType, Toast.LENGTH_SHORT).show()
+         listLocation.clear()
+        Log.d("TAG", "onCardClick: ${poi.fleetType}")
         removeAllMarkers()
+        val latitude = poi.coordinate.latitude
+        val longitude = poi.coordinate.longitude
+        val location = LatLng(latitude, longitude)
+        Log.d("TAG", "Location: $location")
+        listLocation.add(location)
+        val cameraPosition = CameraPosition.Builder().target(location).zoom(15.5f).build()
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        listLocation.forEach { place ->
+            locationMarker = googleMap.addMarker(
+                MarkerOptions()
+                    .position(place)
+                    .icon(BitmapDescriptorFactory.fromBitmap(getCarBitmap(requireContext())))
+            )!!
+            allMarkers.add(locationMarker)
+
+        }
+        Toast.makeText(context, "$listLocation", Toast.LENGTH_SHORT).show()
     }
 
     private fun getCarBitmap(context: Context): Bitmap {
