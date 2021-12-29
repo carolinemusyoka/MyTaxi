@@ -42,6 +42,21 @@
             app:reverseLayout="false"
             tools:listitem="@layout/list_item_vehicles" />
 
+        <Button
+            android:id="@+id/view_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="570dp"
+            android:background="@drawable/roundedbtn"
+            android:drawableLeft="@drawable/ic_taxi"
+            android:fontFamily="@font/lusitana"
+            android:text="View all taxis"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
@@ -63,7 +78,7 @@
         android:fontFamily="@font/lusitana"
         android:gravity="center|left"
         android:paddingLeft="5dp"
-        android:text="the brown fox jumped over the fence"
+        android:text="Hamburg"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -75,6 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
         android:paddingLeft="5dp"
         android:text="change location"
         android:textColor="@android:color/darker_gray"

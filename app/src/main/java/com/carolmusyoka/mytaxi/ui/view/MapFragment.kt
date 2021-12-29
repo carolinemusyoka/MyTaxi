@@ -18,6 +18,7 @@ import com.carolmusyoka.mytaxi.data.api.ApiHelper
 import com.carolmusyoka.mytaxi.data.api.RetrofitBuilder
 import com.carolmusyoka.mytaxi.data.model.Poi
 import com.carolmusyoka.mytaxi.databinding.FragmentMapBinding
+import com.carolmusyoka.mytaxi.ui.adapter.ItemClickListener
 import com.carolmusyoka.mytaxi.ui.adapter.VehicleListAdapter
 import com.carolmusyoka.mytaxi.ui.viewmodel.MainViewModel
 import com.carolmusyoka.mytaxi.ui.viewmodel.ViewModelFactory
@@ -27,20 +28,15 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.google.android.gms.maps.model.LatLngBounds
 
 
-
-
-
-
-class MapFragment : Fragment(){
+class MapFragment : Fragment(), ItemClickListener{
     private lateinit var mainViewModel: MainViewModel
     private lateinit var _binding: FragmentMapBinding
     private val binding get() = _binding
@@ -73,6 +69,41 @@ class MapFragment : Fragment(){
             mainViewModel = ViewModelProvider(requireActivity(), factory).get(MainViewModel::class.java)
         }
         populateData()
+        binding.viewAll.setOnClickListener {
+            viewAll()
+            binding.viewAll.text = "Clear all"
+            if (binding.viewAll.text == "Clear all"){
+                clearAll()
+            }
+        }
+    }
+
+    private fun clearAll() {
+
+    }
+
+    private fun viewAll() {
+        mainViewModel.vehicles.observe(viewLifecycleOwner, {
+            val data = it
+            val listLocation: MutableList<LatLng> = mutableListOf()
+            Log.d("TAG", "startMapNewList:$data ")
+            data.forEach { poi ->
+                val latitude = poi.coordinate.latitude
+                val longitude = poi.coordinate.longitude
+                val location = LatLng(latitude, longitude)
+                Log.d("TAG", "Location: $location")
+                listLocation.add(location)
+            }
+            Log.d("TAG", "LocationArray:$listLocation ")
+            listLocation.forEach { place ->
+                googleMap.addMarker(
+                    MarkerOptions()
+                        .position(place)
+                        .icon(BitmapDescriptorFactory.fromBitmap(getCarBitmap(requireContext())))
+                )
+            }
+
+        })
     }
 
     private fun populateData() {
@@ -85,11 +116,10 @@ class MapFragment : Fragment(){
                         resource.data?.let { data ->
                             mainViewModel.setVehicles(data)
                             Log.d("TAG", "populateDataList: $list")
-                            vehicleListAdapter = VehicleListAdapter(data)
+                            vehicleListAdapter = VehicleListAdapter(data, this)
                             binding.vehiclesRecyclerView.adapter = vehicleListAdapter
                             binding.vehiclesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         }
-
                     }
                     Status.LOADING ->{
 
@@ -135,43 +165,34 @@ class MapFragment : Fragment(){
                 mMapView.getMapAsync { mMap ->
                     googleMap = mMap
                     Log.d("TAG", "startMapList: $list")
-                    mainViewModel.vehicles.observe(viewLifecycleOwner, {
-                        val data = it
-                        val listLocation: MutableList<LatLng> = mutableListOf()
-                        Log.d("TAG", "startMapNewList:$data ")
-                        data.forEach { poi ->
-                            val latitude = poi.coordinate.latitude
-                            val longitude = poi.coordinate.longitude
-                            val location = LatLng(latitude, longitude)
-                            Log.d("TAG", "Location: $location")
-                            listLocation.add(location)
-                        }
-                        Log.d("TAG", "LocationArray:$listLocation ")
-                        listLocation.forEach { place ->
-                            googleMap.addMarker(
-                                MarkerOptions()
-                                    .position(place)
-                                    .title("Marker in Hamburg")
-                                    .icon(BitmapDescriptorFactory.fromBitmap(getCarBitmap(requireContext())))
-                            )
-                        }
-                    })
                     val builder = LatLngBounds.Builder()
                     val locBounds = LatLngBounds(LatLng(53.394655, 10.09989), LatLng(53.694865, 9.75758))
                     builder.include(locBounds.southwest)
                     builder.include(locBounds.northeast)
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
-//                    val centerBound = locBounds.center
-//                    val cameraPosition = CameraPosition.Builder().target(centerBound).zoom(15.5f).build()
-//                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+
                 }
 
             }
         }
     }
 
+    override fun onCardClick(poi: Poi) {
+
+        Log.d("TAG", "onCardClick: $poi")
+        val longitude = poi.coordinate.longitude
+        val latitude  = poi.coordinate.latitude
+        val location = LatLng(latitude, longitude)
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(location)
+                    .title(poi.fleetType)
+                    .icon(BitmapDescriptorFactory.fromBitmap(getCarBitmap(requireContext())))
+            )
+    }
+
     private fun getCarBitmap(context: Context): Bitmap {
-        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.taxi_ov)
+        val bitmap: Bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.taxi_ov)
         return Bitmap.createScaledBitmap(bitmap, 100, 100, false)
     }
 
