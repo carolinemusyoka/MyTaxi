@@ -6,9 +6,12 @@ import androidx.lifecycle.liveData
 import com.carolmusyoka.mytaxi.data.model.Poi
 import com.carolmusyoka.mytaxi.data.repository.MainRepository
 import com.carolmusyoka.mytaxi.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
-class MainViewModel (private val mainRepository: MainRepository): ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(private val mainRepository: MainRepository): ViewModel() {
 
     val vehicles = MutableLiveData<List<Poi>>()
 
