@@ -71,9 +71,6 @@ class MapFragment : Fragment(), ItemClickListener{
         viewLifecycleOwner.lifecycleScope.launch {
             startMap(savedInstanceState)
         }
-
-
-//            mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         populateData()
         binding.viewAll.setOnClickListener {
             viewAll()
