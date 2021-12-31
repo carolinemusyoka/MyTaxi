@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,13 +33,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.google.android.gms.maps.model.MarkerOptions
+import dagger.hilt.android.AndroidEntryPoint
+import retrofit2.Retrofit
 
-
-
-
-
+@AndroidEntryPoint
 class MapFragment : Fragment(), ItemClickListener{
-    private lateinit var mainViewModel: MainViewModel
+     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var _binding: FragmentMapBinding
     private val binding get() = _binding
     private lateinit var vehicleListAdapter: VehicleListAdapter
@@ -70,11 +70,6 @@ class MapFragment : Fragment(), ItemClickListener{
 
         viewLifecycleOwner.lifecycleScope.launch {
             startMap(savedInstanceState)
-        }
-
-        activity.let {
-            val factory = ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
-            mainViewModel = ViewModelProvider(requireActivity(), factory).get(MainViewModel::class.java)
         }
         populateData()
         binding.viewAll.setOnClickListener {
