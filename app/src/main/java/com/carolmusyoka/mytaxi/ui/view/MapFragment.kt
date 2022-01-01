@@ -11,18 +11,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.carolmusyoka.mytaxi.R
-import com.carolmusyoka.mytaxi.data.api.ApiHelper
-import com.carolmusyoka.mytaxi.data.api.RetrofitBuilder
 import com.carolmusyoka.mytaxi.data.model.Poi
 import com.carolmusyoka.mytaxi.databinding.FragmentMapBinding
 import com.carolmusyoka.mytaxi.ui.adapter.ItemClickListener
 import com.carolmusyoka.mytaxi.ui.adapter.VehicleListAdapter
 import com.carolmusyoka.mytaxi.ui.viewmodel.MainViewModel
-import com.carolmusyoka.mytaxi.ui.viewmodel.ViewModelFactory
 import com.carolmusyoka.mytaxi.utils.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -34,7 +30,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Retrofit
 
 @AndroidEntryPoint
 class MapFragment : Fragment(), ItemClickListener{
@@ -69,7 +64,7 @@ class MapFragment : Fragment(), ItemClickListener{
         mMapView = binding.map
 
         viewLifecycleOwner.lifecycleScope.launch {
-            startMap(savedInstanceState)
+            startMap()
         }
         populateData()
         binding.viewAll.setOnClickListener {
@@ -136,7 +131,7 @@ class MapFragment : Fragment(), ItemClickListener{
         })
     }
 
-    private suspend fun startMap(savedInstanceState: Bundle?) {
+    private suspend fun startMap() {
         mMapView.onCreate(null)
         withContext(Dispatchers.Default) {
             mMapView.onResume()
