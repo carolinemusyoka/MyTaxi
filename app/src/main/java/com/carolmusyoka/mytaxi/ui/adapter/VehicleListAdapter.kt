@@ -12,7 +12,7 @@ import com.carolmusyoka.mytaxi.data.model.Poi
 import com.carolmusyoka.mytaxi.databinding.ListItemVehiclesBinding
 import java.util.*
 
-class VehicleListAdapter(private val context: Context, private val poiList: List<Poi>, private var clickListener: ItemClickListener)
+class VehicleListAdapter(context: Context, private val poiList: List<Poi>, private var clickListener: ItemClickListener)
     : RecyclerView.Adapter<VehicleListAdapter.VehicleVH>(){
 
     private val geocoder: Geocoder = Geocoder(context, Locale.getDefault())
@@ -38,7 +38,7 @@ class VehicleListAdapter(private val context: Context, private val poiList: List
         val state: String = addresses[0].adminArea
         val knownName: String = addresses[0].featureName
         holder.itemView.apply {
-            binding.loc.text = "$city $state \n $knownName"
+            "$city $state \n $knownName".also { binding.loc.text = it }
             binding.vehicleName.text = item.fleetType
 
             if (item.fleetType == "TAXI"){

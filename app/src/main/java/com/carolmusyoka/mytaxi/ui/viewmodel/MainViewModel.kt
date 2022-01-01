@@ -15,27 +15,13 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val mainRepository: MainRepository): ViewModel() {
 
-    private var isSessionExpired = false
-
     val vehicles = MutableLiveData<List<Poi>>()
-    val individualVehicle = MutableLiveData<Poi>()
 
     fun setVehicles(poi: List<Poi>){
         vehicles.value = poi
     }
-    fun setOneVehicle(poi: Poi){
-        individualVehicle.value = poi
-    }
 
-    suspend fun checkSessionExpiry(): Boolean {
-        withContext(Dispatchers.IO) {
-            delay(5_000) // to simulate a heavy weight operations
-            isSessionExpired = true
-        }
-        return isSessionExpired
-    }
-
-   fun getVehicles(p1Lat: Double, p1Lon: Double, p2Lat: Double, p2Lon: Double) = liveData(Dispatchers.IO){
+    fun getVehicles(p1Lat: Double, p1Lon: Double, p2Lat: Double, p2Lon: Double) = liveData(Dispatchers.IO){
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = mainRepository.getVehicles(p1Lat, p1Lon, p2Lat, p2Lon).poiList))
