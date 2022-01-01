@@ -48,24 +48,11 @@ class MainViewModelTest {
         // do something if required
     }
 
-//    @Test
-//    fun givenServerResponse200_whenFetch_shouldReturnSuccess() {
-//        testCoroutineRule.runBlockingTest {
-//            doReturn(emptyList<ApiUser>())
-//                .`when`(apiHelper)
-//                .get()
-//            val viewModel = MainViewModel(mainRepository)
-//            viewModel.getUsers().observeForever(apiUsersObserver)
-//            verify(apiHelper).getUsers()
-//            verify(apiUsersObserver).onChanged(Resource.success(emptyList()))
-//            viewModel.getUsers().removeObserver(apiUsersObserver)
-//        }
-//    }
 
     @Test
     fun givenServerResponseError_whenFetch_shouldReturnError() {
         testCoroutineRule.runBlockingTest {
-            val errorMessage = "Error Message For You"
+            val errorMessage = "Error Message"
             doThrow(RuntimeException(errorMessage))
                 .`when`(apiHelper)
                 .getVehicles(53.694865, 9.757590,  53.394655,10.099891)
