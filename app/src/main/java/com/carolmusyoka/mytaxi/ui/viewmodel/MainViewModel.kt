@@ -8,15 +8,31 @@ import com.carolmusyoka.mytaxi.data.repository.MainRepository
 import com.carolmusyoka.mytaxi.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val mainRepository: MainRepository): ViewModel() {
 
+    private var isSessionExpired = false
+
     val vehicles = MutableLiveData<List<Poi>>()
+    val individualVehicle = MutableLiveData<Poi>()
 
     fun setVehicles(poi: List<Poi>){
         vehicles.value = poi
+    }
+    fun setOneVehicle(poi: Poi){
+        individualVehicle.value = poi
+    }
+
+    suspend fun checkSessionExpiry(): Boolean {
+        withContext(Dispatchers.IO) {
+            delay(5_000) // to simulate a heavy weight operations
+            isSessionExpired = true
+        }
+        return isSessionExpired
     }
 
    fun getVehicles(p1Lat: Double, p1Lon: Double, p2Lat: Double, p2Lon: Double) = liveData(Dispatchers.IO){
