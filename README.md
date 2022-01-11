@@ -9,7 +9,7 @@ https://fake-poi-api.mytaxi.com/?p1Lat={Latitude1}&p1Lon={Longitude1}&p2Lat={Lat
 in this case, https://fake-poi-api.mytaxi.com/?p1Lat=53.694865&p1Lon=9.757589&p2Lat=53.394655&p2Lon=10.099891
 
 
-Example response: 
+#### Example response: 
 
 ```json
 "poiList": [
@@ -33,9 +33,9 @@ Example response:
         },
 ```        
  It's a pretty simple app
-  Launch app -> view a list of all vehicles( horizontal orientation) -> click view all to see all markers of the vehiclles available -> click a single item to isolate the selected vehicle on the map and zoom to its location -> click map to display the steet name. 
+  #### Launch app -> view a list of all vehicles( horizontal orientation) -> click view all to see all markers of the vehiclles available -> click a single item to isolate the selected vehicle on the map and zoom to its location -> click map to display the steet name. 
   
-Screenshots and recordings
+### Screenshots and recordings
 
 <img src="https://user-images.githubusercontent.com/44951692/148917345-187683df-eb22-4efc-b70b-83af7eb95d36.jpg" width=30% height=30%> <img src="https://user-images.githubusercontent.com/44951692/148917384-7396ba9d-091c-4c65-9fb9-77a5b2f66fa5.jpg" width=30% height=30%> <img src="https://user-images.githubusercontent.com/44951692/148917360-f7dd6c6e-42cc-4ae8-ad59-f146f9b9269b.jpg" width=30% height=30%>
 
@@ -45,9 +45,9 @@ https://user-images.githubusercontent.com/44951692/148918420-09fc7ea0-6564-421a-
 
 
 
-A few gists that I would like to single out in maps;
+### A few gists that I would like to single out in this project;
 
-- To zoom map to given bounds
+#### - To zoom map to given bounds
 ```kotlin
 val builder = LatLngBounds.Builder()
         val locBounds = LatLngBounds(LatLng(53.394655, 10.09989), LatLng(53.694865, 9.75758))
@@ -55,7 +55,7 @@ val builder = LatLngBounds.Builder()
         builder.include(locBounds.northeast)
         googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
 ```
-- Show markers of all vehicles on the map
+#### - Show markers of all vehicles on the map
  I saved the list of vehicles in case I would need it in another fragment which I didn't so ;-|
  In the viewmodel, 
  
@@ -67,7 +67,7 @@ val builder = LatLngBounds.Builder()
     }
 ```
 
-Retrieve the list, I used forEach in place of for loop make the code more concise and add markers at the given locations
+#### - Retrieve the list, I used forEach in place of for loop make the code more concise and add markers at the given locations
 
 
 ```kotlin
